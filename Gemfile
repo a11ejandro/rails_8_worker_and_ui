@@ -21,18 +21,18 @@ gem "jbuilder"
 gem "sidekiq"
 gem "dotenv-rails"
 
+# Pagination
+gem "kaminari"
+
 # Benchmarking
-gem "memory-profiler"
+gem "memory_profiler"
+gem "sync" # memory-profiler dependency
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
-
-# Use the database-backed adapters for Rails.cache and Active Job
-gem "solid_cache"
-gem "solid_queue"
 
 # Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
 gem "kamal", require: false
@@ -52,6 +52,8 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  gem "pry"
 end
 
 group :development do

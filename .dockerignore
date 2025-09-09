@@ -52,4 +52,4 @@
 
 # Ignore database files
 /pgdata
-/redis-data
+/redis_data

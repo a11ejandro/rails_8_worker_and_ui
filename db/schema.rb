@@ -16,7 +16,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_07_025551) do
 
   create_table "handlers", force: :cascade do |t|
     t.bigint "task_id", null: false
-    t.string "type"
+    t.string "handler_type"
     t.index ["task_id"], name: "index_handlers_on_task_id"
   end
 
@@ -26,9 +26,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_07_025551) do
 
   create_table "tasks", force: :cascade do |t|
     t.string "name"
-    t.integer "page"
-    t.integer "per_page"
-    t.integer "runs"
+    t.integer "page", default: 1, null: false
+    t.integer "per_page", default: 20, null: false
+    t.integer "runs", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

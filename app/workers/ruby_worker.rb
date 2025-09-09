@@ -4,20 +4,20 @@ class RubyWorker
   def perform(test_run_id)
     test_run = TestRun.find(test_run_id)
     task = test_run.handler.task
-    page_size = task.page_size
+    page_size = task.per_page
     page = task.page
     results = {}
+    time = nil
+    memory = nil
     values = get_page_values(page, page_size)
 
-    MemoryProfiler.start
-
     time = Benchmark.measure do
-      results = CalculateStatistics.call(values)
+      memory = MemoryProfiler.report do
+        results = CalculateStatistics.call(values)
+      end
     end
 
-    memory_profiler = MemoryProfiler.stop
-
-    TestResult.create!(**results, test_run: test_run, time: time.real, memory_usage: memory_profiler.total_allocated_memsize)
+    TestResult.create!(**results, test_run: test_run, duration: time.real, memory_usage: memory.total_allocated_memsize)
   end
 
   private

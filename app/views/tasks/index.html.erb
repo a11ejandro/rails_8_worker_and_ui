@@ -1,0 +1,30 @@
+<h1>Tasks</h1>
+
+<%= link_to 'New Task', new_task_path, class: 'btn btn-primary' %>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Page</th>
+      <th>Per Page</th>
+      <th>Runs</th>
+      <th>Created At</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @tasks.each do |task| %>
+      <tr>
+        <td><%= task.id %></td>
+        <td><%= link_to task.name, task_path(task) %></td>
+        <td><%= task.page %></td>
+        <td><%= task.per_page %></td>
+        <td><%= task.runs %></td>
+        <td><%= task.created_at.strftime('%Y-%m-%d %H:%M:%S') %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @tasks %>
