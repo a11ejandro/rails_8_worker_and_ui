@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_07_025551) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_12_022855) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -22,6 +22,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_07_025551) do
 
   create_table "samples", force: :cascade do |t|
     t.float "value"
+  end
+
+  create_table "statistics", force: :cascade do |t|
+    t.bigint "handler_id", null: false
+    t.string "metric", null: false
+    t.float "standard_deviation"
+    t.float "min"
+    t.float "max"
+    t.float "mean"
+    t.float "median"
+    t.float "q1"
+    t.float "q3"
+    t.index ["handler_id"], name: "index_statistics_on_handler_id"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -43,7 +56,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_07_025551) do
     t.float "max"
     t.float "standard_deviation"
     t.float "duration"
-    t.float "memory_usage"
+    t.float "memory"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["test_run_id"], name: "index_test_results_on_test_run_id"
@@ -58,6 +71,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_07_025551) do
   end
 
   add_foreign_key "handlers", "tasks"
+  add_foreign_key "statistics", "handlers"
   add_foreign_key "test_results", "test_runs"
   add_foreign_key "test_runs", "handlers"
 end

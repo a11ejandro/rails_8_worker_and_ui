@@ -11,7 +11,7 @@ class CreateTestResults < ActiveRecord::Migration[8.0]
       t.float :standard_deviation
 
       t.float :duration
-      t.float :memory_usage
+      t.float :memory
 
       t.timestamps
     end

@@ -17,7 +17,7 @@ class RubyWorker
       end
     end
 
-    TestResult.create!(**results, test_run: test_run, duration: time.real, memory_usage: memory.total_allocated_memsize)
+    TestResult.create!(**results, test_run: test_run, duration: time.real, memory: memory.total_allocated_memsize)
   end
 
   private
