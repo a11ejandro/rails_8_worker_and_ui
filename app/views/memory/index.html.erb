@@ -1,0 +1,12 @@
+<h1>Memory by Page Size</h1>
+
+<%= link_to 'Back to Tasks', tasks_path %>
+
+<div class="box-chart">
+  <div class="box">
+    <div data-memories='<%= @series_by_handler.to_json %>'></div>
+  </div>
+</div>
+
+<%= javascript_import_module_tag 'memory_chart' %>
+

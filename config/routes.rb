@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     patch :selected, to: 'tasks#update_selected', on: :member, as: :selected
   end
   get '/durations', to: 'durations#index', as: :durations
+  get '/memory', to: 'memory#index', as: :memory
   root "tasks#index"
 
   mount Sidekiq::Web => "/sidekiq" # access it at http://localhost:3000/sidekiq
