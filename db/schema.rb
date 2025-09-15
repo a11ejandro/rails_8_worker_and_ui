@@ -42,6 +42,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_12_022855) do
     t.integer "page", default: 1, null: false
     t.integer "per_page", default: 20, null: false
     t.integer "runs", default: 1, null: false
+    t.boolean "selected"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

@@ -21,9 +21,6 @@ gem "jbuilder"
 gem "sidekiq"
 gem "dotenv-rails"
 
-# Pagination
-gem "kaminari"
-
 # Benchmarking
 gem "memory_profiler"
 gem "sync" # memory-profiler dependency

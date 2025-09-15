@@ -1,10 +1,17 @@
 class TasksController < ApplicationController
   def index
-    @tasks = Task.order(created_at: :desc).page(params[:page]).per(20)
+    @tasks = Task.all
   end
 
   def show
     @task = Task.find(params[:id])
+    @handler_stats = @task.handlers.includes(test_runs: :test_results).map do |handler|
+      {
+        handler_type: handler.handler_type,
+        duration: handler.test_runs.map(&:duration).compact,
+        memory_usage: handler.test_runs.map(&:memory_usage).compact
+      }
+    end
   end
 
   def enqueue_ruby_runs
