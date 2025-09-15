@@ -22,18 +22,13 @@ class Handler < ApplicationRecord
     !test_runs.joins(:test_results).where(test_results: { id: nil }).exists?
   end
 
-
-  private
-
   def save_statistics
-    if duration_statistics.blank?
-      durations = CalculateStatistics.call(test_results.pluck(:duration))
-      statistics.create!(**durations, metric: 'duration')
-    end
+    duration = statistics.find_or_initialize_by(metric: 'duration')
+    duration.assign_attributes(**CalculateStatistics.call(test_results.pluck(:duration)))
+    duration.save if duration.changed?
 
-    return if memory_statistics.present?
-
-    memories = CalculateStatistics.call(test_results.pluck(:memory))
-    statistics.create!(**memories, metric: 'memory')
+    memory = statistics.find_or_initialize_by(metric: 'memory')
+    memory.assign_attributes(**CalculateStatistics.call(test_results.pluck(:memory)))
+    memory.save if memory.changed?
   end
 end

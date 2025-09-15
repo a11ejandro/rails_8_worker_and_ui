@@ -8,8 +8,8 @@ class TasksController < ApplicationController
     @handler_stats = @task.handlers.includes(test_runs: :test_results).map do |handler|
       {
         handler_type: handler.handler_type,
-        duration: handler.test_runs.map(&:duration).compact,
-        memory_usage: handler.test_runs.map(&:memory_usage).compact
+        duration: handler.duration_statistics,
+        memory: handler.memory_statistics
       }
     end
   end

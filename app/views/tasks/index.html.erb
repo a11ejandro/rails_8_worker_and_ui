@@ -1,6 +1,10 @@
 <h1>Tasks</h1>
 
-<%= link_to 'New Task', new_task_path, class: 'btn btn-primary' %>
+<div style="display:flex; gap: 12px; align-items:center;">
+  <%= link_to 'New Task', new_task_path, class: 'btn btn-primary' %>
+  <%= link_to 'Durations', durations_path, class: 'btn' %>
+  <div style="flex:1"></div>
+</div>
 
 <table>
   <thead>
