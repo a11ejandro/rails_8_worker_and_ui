@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   resources :tasks, only: [:index, :new, :create, :show] do
     post :enqueue_ruby_runs, on: :member
+    patch :selected, to: 'tasks#update_selected', on: :member, as: :selected
   end
   root "tasks#index"
 

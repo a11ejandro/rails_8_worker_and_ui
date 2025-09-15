@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   def index
-    @tasks = Task.all
+    @tasks = Task.order(:id)
   end
 
   def show
@@ -37,9 +37,25 @@ class TasksController < ApplicationController
     end
   end
 
+  def update_selected
+    @task = Task.find(params[:id])
+    @task.update!(selected_params)
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace(helpers.dom_id(@task, :selected), partial: 'tasks/selected_cell', locals: { task: @task })
+      end
+      format.html { redirect_back fallback_location: tasks_path }
+    end
+  end
+
   private
 
   def task_params
     params.require(:task).permit(:name, :page, :per_page, :runs)
+  end
+
+  def selected_params
+    params.require(:task).permit(:selected)
   end
 end
