@@ -16,12 +16,14 @@ class TasksController < ApplicationController
 
   def enqueue_ruby_runs
     @task = Task.find(params[:id])
-    @handler = Handler.create(task: @task, handler_type: 'ruby')
-    @task.runs.times do |run|
-      test_run = TestRun.create!(handler: @handler, consequent_number: run)
-      RubyWorker.perform_async(test_run.id)
-    end
+    enqueue_runs('ruby') { |id| RubyWorker.perform_async(id) }
     redirect_to task_path(@task), notice: "Enqueued #{@task.runs} Ruby runs."
+  end
+
+  def enqueue_go_runs
+    @task = Task.find(params[:id])
+    enqueue_runs('go') { |id| Sidekiq::Client.push('class' => 'GoWorker', 'queue' => 'go', 'args' => [id]) }
+    redirect_to task_path(@task), notice: "Enqueued #{@task.runs} Go runs."
   end
 
   def new
@@ -57,5 +59,13 @@ class TasksController < ApplicationController
 
   def selected_params
     params.require(:task).permit(:selected)
+  end
+
+  def enqueue_runs(handler_type, &enqueue)
+    handler = Handler.create!(task: @task, handler_type: handler_type)
+    @task.runs.times do |run|
+      test_run = TestRun.create!(handler: handler, consequent_number: run)
+      enqueue.call(test_run.id)
+    end
   end
 end

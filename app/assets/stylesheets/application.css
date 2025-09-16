@@ -108,6 +108,16 @@ tr:last-child td {
   margin: 5px;
 }
 
+/* Ensure anchor-based buttons keep white text and no underline in all states */
+.btn:link,
+.btn:visited,
+.btn:hover,
+.btn:active,
+.btn:focus {
+  color: #fff !important;
+  text-decoration: none !important;
+}
+
 .btn:hover {
   background-color: #2980b9;
   transform: translateY(-2px);
