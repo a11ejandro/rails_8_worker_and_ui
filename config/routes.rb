@@ -15,8 +15,11 @@ Rails.application.routes.draw do
   resources :tasks, only: [:index, :new, :create, :show] do
     post :enqueue_ruby_runs, on: :member
     post :enqueue_go_runs, on: :member
+    post :enqueue_python_runs, on: :member
+    post :recalculate_statistics, on: :member
     patch :selected, to: 'tasks#update_selected', on: :member, as: :selected
   end
+  
   get '/durations', to: 'durations#index', as: :durations
   get '/memory', to: 'memory#index', as: :memory
   root "tasks#index"

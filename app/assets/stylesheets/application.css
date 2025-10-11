@@ -108,6 +108,19 @@ tr:last-child td {
   margin: 5px;
 }
 
+.enqueue-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 8px 0;
+  flex-wrap: wrap;
+}
+
+.button-to-inline {
+  display: inline-flex;
+  margin: 0;
+}
+
 /* Ensure anchor-based buttons keep white text and no underline in all states */
 .btn:link,
 .btn:visited,
@@ -240,7 +253,7 @@ a:hover {
 }
 
 /* Forms */
-form {
+form:not(.button-to-inline) {
   background: white;
   padding: 2rem;
   border-radius: 10px;

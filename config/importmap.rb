@@ -9,3 +9,4 @@ pin "apexcharts", to: "apexcharts.esm.js"
 pin "box_chart"
 pin "durations_chart"
 pin "memory_chart"
+pin "@rails/ujs", to: "@rails--ujs.js" # @7.1.3

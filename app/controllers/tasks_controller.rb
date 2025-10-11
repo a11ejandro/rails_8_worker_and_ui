@@ -26,6 +26,32 @@ class TasksController < ApplicationController
     redirect_to task_path(@task), notice: "Enqueued #{@task.runs} Go runs."
   end
 
+  def enqueue_python_runs
+    @task = Task.find(params[:id])
+    enqueue_runs('python') { |id| PythonWorkerClient.enqueue(id) }
+    redirect_to task_path(@task), notice: "Enqueued #{@task.runs} Python runs."
+  end
+
+  def recalculate_statistics
+    @task = Task.includes(handlers: { test_runs: :test_results }).find(params[:id])
+
+    recalculated = @task.handlers.sum do |handler|
+      next 0 unless handler.complete?
+
+      handler.save_statistics
+      1
+    end
+
+    message =
+      if recalculated.positive?
+        "Recalculated statistics for #{recalculated} handler#{'s' if recalculated > 1}."
+      else
+        'No completed handlers available for recalculation.'
+      end
+
+    redirect_to task_path(@task), notice: message
+  end
+
   def new
     @task = Task.new
   end

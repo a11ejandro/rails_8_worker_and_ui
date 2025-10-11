@@ -19,6 +19,8 @@ class Handler < ApplicationRecord
   end
 
   def complete?
+    return false if test_runs.count.zero?
+
     !test_runs.joins(:test_results).where(test_results: { id: nil }).exists?
   end
 
