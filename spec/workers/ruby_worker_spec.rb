@@ -16,12 +16,13 @@ RSpec.describe RubyWorker, type: :worker do
   let(:window_values) { [30.0, 40.0] }
   let(:expected_stats) { CalculateStatistics.call(window_values) }
 
-  let(:mem_report) { instance_double('MemoryProfiler::Results', total_allocated_memsize: 1234.0) }
-
   before do
     # Deterministic timing and memory (keep real get_page_values behavior)
-    allow(MemoryProfiler).to receive(:report) { |&blk| blk&.call; mem_report }
-    allow(Benchmark).to receive(:measure) { |&blk| blk&.call; double(real: 0.123) }
+    allow(Process).to receive(:clock_gettime).with(Process::CLOCK_MONOTONIC).and_return(1.0, 1.123)
+    allow(worker).to receive(:measure_peak_resident_memory) do |&blk|
+      measurement = blk.call
+      [measurement, 2048.0]
+    end
   end
 
   describe '#perform' do
@@ -37,7 +38,7 @@ RSpec.describe RubyWorker, type: :worker do
       worker.perform(test_run.id)
       tr = TestResult.last
       expect(tr.duration).to eq 0.123
-      expect(tr.memory).to eq 1234.0
+      expect(tr.memory).to eq 2048.0
     end
   end
 end

@@ -26,11 +26,11 @@ class Handler < ApplicationRecord
 
   def save_statistics
     duration = statistics.find_or_initialize_by(metric: 'duration')
-    duration.assign_attributes(**CalculateStatistics.call(test_results.pluck(:duration)))
+    duration.assign_attributes(CalculateStatistics.call(test_results.pluck(:duration)))
     duration.save if duration.changed?
 
     memory = statistics.find_or_initialize_by(metric: 'memory')
-    memory.assign_attributes(**CalculateStatistics.call(test_results.pluck(:memory)))
+    memory.assign_attributes(CalculateStatistics.call(test_results.pluck(:memory)))
     memory.save if memory.changed?
   end
 end
