@@ -20,12 +20,12 @@
 <h2>Statistical Box Charts</h2>
 <div class="box-chart">
   <div class='box'>
-    <h3>Duration, seconds</h3>
+    <h3>Duration, Seconds</h3>
     <div data-duration='<%= @task.statistics_by_metric['duration'].to_json %>'></div>
   </div>
 
   <div class='box'>
-    <h3>Memory, Kb </h3>
+    <h3>Memory, Bytes </h3>
     <div data-memory='<%= @task.statistics_by_metric['memory'].to_json %>'></div>
   </div>
 </div>

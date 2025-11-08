@@ -12,10 +12,13 @@ class DurationsController < ApplicationController
         stat = handler.duration_statistics
         next unless stat
 
+        y = [stat.min, stat.q1, stat.median, stat.q3, stat.max]
+        next if y.compact.blank?
+
         @series_by_handler[handler.handler_type] ||= []
         @series_by_handler[handler.handler_type] << {
           x: per_page,
-          y: [stat.min, stat.q1, stat.median, stat.q3, stat.max]
+          y:
         }
       end
     end
