@@ -11,10 +11,13 @@
 </table>
 
 <div class="enqueue-actions">
-  <%= button_to 'Enqueue Ruby Runs', enqueue_ruby_runs_task_path(@task), method: :post, class: 'btn btn-success', form: { class: 'button-to-inline' } %>
-  <%= button_to 'Enqueue Go Runs', enqueue_go_runs_task_path(@task), method: :post, class: 'btn btn-secondary', form: { class: 'button-to-inline' } %>
+  <%= button_to 'Enqueue Ruby Runs', enqueue_ruby_runs_task_path(@task), method: :post, class: 'btn', form: { class: 'button-to-inline' } %>
+  <%= button_to 'Enqueue Go Runs', enqueue_go_runs_task_path(@task), method: :post, class: 'btn', form: { class: 'button-to-inline' } %>
   <%= button_to 'Enqueue Python Runs', enqueue_python_runs_task_path(@task), method: :post, class: 'btn', form: { class: 'button-to-inline' } %>
-  <%= button_to 'Recalculate Run Statistics', recalculate_statistics_task_path(@task), method: :post, class: 'btn btn-outline-primary', form: { class: 'button-to-inline' }, data: { turbo_confirm: 'Recalculate statistics for completed handlers?' } %>
+  <%= button_to 'Enqueue Node Runs', enqueue_node_runs_task_path(@task), method: :post, class: 'btn', form: { class: 'button-to-inline' } %>
+  <%= button_to 'Recalculate Run Statistics', recalculate_statistics_task_path(@task), method: :post, class: 'btn btn-success btn-outline-primary', form: { class: 'button-to-inline' }, data: { turbo_confirm: 'Recalculate statistics for completed handlers?' } %>
+  <%= link_to 'Durations CSV', durations_csv_task_path(@task, format: :csv), class: 'btn btn-secondary' %>
+  <%= link_to 'Memory CSV', memory_csv_task_path(@task, format: :csv), class: 'btn btn-secondary' %>
 </div>
 
 <h2>Statistical Box Charts</h2>

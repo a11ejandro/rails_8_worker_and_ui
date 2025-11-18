@@ -12,7 +12,7 @@ function parseJSONAttribute(el, name) {
 
 function toSeries(seriesByHandler) {
   if (!seriesByHandler) return [];
-  const preferredOrder = ["ruby", "go", "python"]; // stable colors
+  const preferredOrder = ["ruby", "go", "python", "node"]; // stable colors
   const keys = [
     ...preferredOrder.filter((k) => Object.prototype.hasOwnProperty.call(seriesByHandler, k)),
     ...Object.keys(seriesByHandler).filter((k) => !preferredOrder.includes(k)).sort(),
@@ -58,4 +58,3 @@ document.addEventListener("DOMContentLoaded", initMemory);
 if (document.readyState === "interactive" || document.readyState === "complete") {
   initMemory();
 }
-

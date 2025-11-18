@@ -14,6 +14,15 @@ class TasksController < ApplicationController
     end
   end
 
+  # CSV export: one column per handler type, each row is the nth test_result for that handler.
+  def durations_csv
+    send_series_csv('duration')
+  end
+
+  def memory_csv
+    send_series_csv('memory')
+  end
+
   def enqueue_ruby_runs
     @task = Task.find(params[:id])
     enqueue_runs('ruby') { |id| RubyWorker.perform_async(id) }
@@ -30,6 +39,14 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
     enqueue_runs('python') { |id| PythonWorkerClient.enqueue(id) }
     redirect_to task_path(@task), notice: "Enqueued #{@task.runs} Python runs."
+  end
+
+  def enqueue_node_runs
+    @task = Task.find(params[:id])
+    enqueue_runs('node') do |id|
+      Sidekiq::Client.push('class' => 'NodeWorker', 'queue' => 'node', 'args' => [id])
+    end
+    redirect_to task_path(@task), notice: "Enqueued #{@task.runs} Node runs."
   end
 
   def recalculate_statistics
@@ -93,5 +110,14 @@ class TasksController < ApplicationController
       test_run = TestRun.create!(handler: handler, consequent_number: run)
       enqueue.call(test_run.id)
     end
+  end
+
+  def send_series_csv(metric)
+    @task = Task.includes(handlers: { test_runs: :test_results }).find(params[:id])
+    exporter = TaskSeriesCsvExporter.new(task: @task, metric: metric)
+    csv = exporter.generate
+    send_data csv,
+              filename: "task-#{@task.id}-#{metric}-series.csv",
+              type: 'text/csv; charset=utf-8'
   end
 end

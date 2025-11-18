@@ -16,7 +16,10 @@ Rails.application.routes.draw do
     post :enqueue_ruby_runs, on: :member
     post :enqueue_go_runs, on: :member
     post :enqueue_python_runs, on: :member
+    post :enqueue_node_runs, on: :member
     post :recalculate_statistics, on: :member
+    get  :durations_csv, on: :member
+    get  :memory_csv,    on: :member
     patch :selected, to: 'tasks#update_selected', on: :member, as: :selected
   end
   

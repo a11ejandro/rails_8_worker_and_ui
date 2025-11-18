@@ -1,5 +1,5 @@
 class Handler < ApplicationRecord
-  TYPES = %w[ruby go python].freeze
+  TYPES = %w[ruby go python node].freeze
 
   belongs_to :task
   has_many :test_runs, dependent: :destroy
