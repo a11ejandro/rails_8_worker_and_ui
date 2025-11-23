@@ -33,7 +33,7 @@ RSpec.describe TaskSeriesCsvExporter do
       expect(rows.first).to eq(['index', 'go', 'python', 'ruby'])
     end
 
-    it 'pads unequal series with blanks and shows decimals for integers' do
+  it 'pads unequal series with blanks and shows 6 decimal places for integers' do
       create_handler(task, 'go', durations: [10, 20, 30])
       create_handler(task, 'ruby', durations: [5])
 
@@ -42,11 +42,11 @@ RSpec.describe TaskSeriesCsvExporter do
       # Header + 3 data rows (length of longest series)
       expect(rows.length).to eq 4
       # Row 0
-      expect(rows[1]).to eq(['0', '10.0', '5.0'])
+  expect(rows[1]).to eq(['0', '10.000000', '5.000000'])
       # Row 1 (ruby missing)
-      expect(rows[2]).to eq(['1', '20.0', nil])
+  expect(rows[2]).to eq(['1', '20.000000', nil])
       # Row 2 (ruby missing)
-      expect(rows[3]).to eq(['2', '30.0', nil])
+  expect(rows[3]).to eq(['2', '30.000000', nil])
     end
 
     it 'returns only header row when all handlers have empty series' do
@@ -58,24 +58,24 @@ RSpec.describe TaskSeriesCsvExporter do
       expect(rows).to eq([['index', 'go', 'ruby']])
     end
 
-    it 'exports memory values when metric is memory' do
+  it 'exports memory values when metric is memory with 6 decimal places' do
       create_handler(task, 'go', memories: [1.5, 2.5])
       create_handler(task, 'ruby', memories: [9.9])
 
       csv = described_class.new(task: task, metric: 'memory').generate
       rows = CSV.parse(csv)
       expect(rows.first).to eq(['index', 'go', 'ruby'])
-      expect(rows[1]).to eq(['0', '1.5', '9.9'])
-      expect(rows[2]).to eq(['1', '2.5', nil])
+  expect(rows[1]).to eq(['0', '1.500000', '9.900000'])
+  expect(rows[2]).to eq(['1', '2.500000', nil])
     end
 
-    it 'always shows .0 for integer-like values across handlers' do
+  it 'always shows 6 decimal places for integer-like values across handlers' do
       create_handler(task, 'go', durations: [1, 2])
       create_handler(task, 'ruby', durations: [3])
       csv = described_class.new(task: task, metric: 'duration').generate
       rows = CSV.parse(csv)
-      expect(rows[1]).to eq(['0', '1.0', '3.0'])
-      expect(rows[2]).to eq(['1', '2.0', nil])
+  expect(rows[1]).to eq(['0', '1.000000', '3.000000'])
+  expect(rows[2]).to eq(['1', '2.000000', nil])
     end
 
     it 'raises for unsupported metric' do

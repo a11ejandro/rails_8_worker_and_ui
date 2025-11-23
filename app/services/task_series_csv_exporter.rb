@@ -71,9 +71,8 @@ class TaskSeriesCsvExporter
   def format_value(val)
     return nil if val.nil?
     if val.is_a?(Numeric)
-      # Always display a decimal for integer-like numerics; preserve original for non-integers.
-      return format('%0.1f', val) if val % 1 == 0
-      return val.to_s
+      # Always display decimals with consistent precision (6 places) for easier spreadsheet comparison
+      return format('%.6f', val)
     end
     val.to_s
   end

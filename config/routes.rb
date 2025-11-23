@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   
   get '/durations', to: 'durations#index', as: :durations
   get '/memory', to: 'memory#index', as: :memory
+  get '/memory/selected_csv', to: 'memory#selected_csv', as: :memory_selected_csv
   root "tasks#index"
 
   mount Sidekiq::Web => "/sidekiq" # access it at http://localhost:3000/sidekiq
