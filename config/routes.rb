@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   end
   
   get '/durations', to: 'durations#index', as: :durations
+  get '/durations/selected_csv', to: 'durations#selected_csv', as: :durations_selected_csv
   get '/memory', to: 'memory#index', as: :memory
   get '/memory/selected_csv', to: 'memory#selected_csv', as: :memory_selected_csv
   root "tasks#index"

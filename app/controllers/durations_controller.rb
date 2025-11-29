@@ -23,5 +23,12 @@ class DurationsController < ApplicationController
       end
     end
   end
+
+  def selected_csv
+    tasks = Task.where(selected: true)
+    csv = SelectedTasksDurationCsvExporter.new(tasks: tasks).generate
+    send_data csv, filename: "selected_tasks_durations_#{Time.now.utc.strftime('%Y%m%d%H%M%S')}.csv",
+              type: 'text/csv'
+  end
 end
 
