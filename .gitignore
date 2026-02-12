@@ -36,3 +36,6 @@
 # Ignore database files
 /pgdata
 /redis_data
+
+# Ignore generated files
+/docs

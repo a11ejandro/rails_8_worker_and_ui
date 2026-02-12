@@ -38,7 +38,7 @@ class PythonWorkerClient
     end
 
     def endpoint
-      ENV.fetch('PYTHON_WORKER_URL', DEFAULT_ENDPOINT)
+      ENV.fetch('PYTHON_WORKER_API', DEFAULT_ENDPOINT)
     end
 
     def parse_task_id(body)
