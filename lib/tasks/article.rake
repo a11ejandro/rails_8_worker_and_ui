@@ -318,17 +318,31 @@ namespace :article do
   end
 
   desc "Generate static SVG figures for the article from docs/data/*.csv"
-  task generate_figures: :environment do
+  # Usage:
+  #   bundle exec rails "article:generate_figures[/path/to/durations.csv,/path/to/memory.csv,/path/to/out_dir]"
+  # or via env vars:
+  #   DURATIONS_PATH=... MEMORY_PATH=... FIGURES_OUT_DIR=... bundle exec rails article:generate_figures
+  task :generate_figures, %i[durations memory out] => :environment do |_t, args|
     require Rails.root.join("lib", "article", "figure_generator")
 
-    durations_path = Rails.root.join("docs", "data", "durations_selected.csv")
-    memory_path = Rails.root.join("docs", "data", "memory_selected.csv")
-    out_dir = Rails.root.join("docs", "figures")
+    default_durations = Rails.root.join("docs", "data", "durations_selected.csv")
+    default_memory = Rails.root.join("docs", "data", "memory_selected.csv")
+    default_out = Rails.root.join("docs", "figures")
+
+    durations_path = Pathname.new((args[:durations] || ENV["DURATIONS_PATH"] || default_durations).to_s)
+    memory_path = Pathname.new((args[:memory] || ENV["MEMORY_PATH"] || default_memory).to_s)
+    out_dir = Pathname.new((args[:out] || ENV["FIGURES_OUT_DIR"] || default_out).to_s)
+
+    FileUtils.mkdir_p(out_dir)
+
+    puts "[article:generate_figures] durations: #{durations_path}"
+    puts "[article:generate_figures] memory:    #{memory_path}"
+    puts "[article:generate_figures] out:       #{out_dir}"
 
     Article::FigureGenerator.generate!(
-      durations_path: durations_path,
-      memory_path: memory_path,
-      out_dir: out_dir
+      durations_path: durations_path.to_s,
+      memory_path: memory_path.to_s,
+      out_dir: out_dir.to_s
     )
   end
 
