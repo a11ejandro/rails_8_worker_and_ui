@@ -6,7 +6,7 @@ module ArticleTaskHelpers
     rows: "100000",
     seed: "123",
     dist: "survey",
-    per_pages: "1,10,25,50,100,250,500,1000",
+    per_pages: "1,10,25,50,100,250,500,1000,10000,100000",
     runs: "30",
     page: "1",
     handlers: "ruby,go,python,node",
