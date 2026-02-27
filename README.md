@@ -22,3 +22,21 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+## Run tests (no local installs)
+
+From the repository root (`rails_8/`):
+
+```bash
+# Rails / RSpec
+docker compose run --rm benchmark_ui bundle exec rspec
+
+# Go worker unit tests
+docker compose run --rm golang_worker_test
+
+# Node worker unit tests
+docker compose run --rm node_worker node --test
+
+# Python worker unit tests
+docker compose run --rm python_worker python -m unittest discover -s tests -p 'test_*.py'
+```
